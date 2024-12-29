@@ -26,7 +26,7 @@ A package for scientific analysis and communication.
 Features
 --------
 
-* TODO
+- Performs statistical hypothesis tests and formats results for figures and tables.
 
 Credits
 -------

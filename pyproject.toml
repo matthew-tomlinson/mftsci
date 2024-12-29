@@ -17,8 +17,14 @@ classifiers = [
 
 ]
 license = {text = "MIT license"}
+requires-python = ">3.11"
 dependencies = [
-  
+  "numpy",
+  "scipy",
+  "pandas",
+  "matplotlib",
+  "statsmodels",
+  "numdifftools",
 ]
 
 [project.optional-dependencies]
