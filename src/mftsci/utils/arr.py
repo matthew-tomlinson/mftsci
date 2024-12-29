@@ -33,6 +33,28 @@ def attr(
             a: Union[np.ndarray, list, float, int, bool, str,],
             attr: Optional[str] = None,
             ) -> object:
+    """
+    Returns the specified attribute of each element of the input array or list if
+    provided, otherwise returns the input array.
+
+    Parameters
+    ----------
+    a : Union[np.ndarray, list, float, int, bool, str,]
+        The input array or list.
+        Can be of types: np.ndarray, list, float, int, bool, or str.
+    attr : str, optional
+        The attribute function to apply.
+
+    Returns
+    -------
+    np.ndarray
+        The specified attribute of each element or the input array.
+
+    Examples
+    --------
+    >>> attr(np.array([1. - 1.j, 2., 3. + 1.j]), attr="real")
+    np.array([1., 2., 3.])
+    """
 
     return _attr_vector(
                         obj=a,
@@ -46,6 +68,33 @@ def fattr(
             args: Optional[tuple] = None,
             kwargs: Optional[dict] = None,
             ) -> object:
+    """
+    Runs the specified attribute function with arguments on each element of the input
+    array or list.
+
+    Parameters
+    ----------
+    a : Union[np.ndarray, list, float, int, bool, str,]
+        The input array or list.
+        Can be of types: np.ndarray, list, float, int, bool, or str.
+    attr : str, optional
+        The function to apply.
+    args : tuple, optional
+        The positional arguments to pass to the function.
+    kwargs : dict, optional
+        The keyword arguments to pass to the function.
+
+    Returns
+    -------
+    np.ndarray
+        The output of the specified attribute function for each element or the input
+        array.
+
+    Examples
+    --------
+    >>> fattr(np.array(["apple", "banana"]), attr="capitalize")
+    np.array(["Apple", "Banana"])
+    """
 
     return _fattr_vector(
                         obj=a,
@@ -58,6 +107,31 @@ def fattr(
 def default(
             a: Optional[Union[np.ndarray, list, float, int, bool, str,]] = None,
             ) -> np.ndarray:
+    """
+    Converts the input to a NumPy array.
+
+    Parameters
+    ----------
+    a : Optional[Union[np.ndarray, list, float, int, bool, str,]], optional
+        The input to be converted to a NumPy array. If None, an empty list is used.
+        Can be of types: np.ndarray, list, float, int, bool, or str.
+
+    Returns
+    -------
+    np.ndarray
+        The input converted to a NumPy array.
+
+    Examples
+    --------
+    >>> default()
+    array([], dtype=float64)
+
+    >>> default(5)
+    array([5])
+
+    >>> default([1, 2, 3])
+    array([1, 2, 3])
+    """
 
     if a is None:
         a = []
@@ -71,6 +145,32 @@ def default(
 def calc_shape(
                 a: Optional[Union[np.ndarray, list, float, int, bool, str,]] = None,
                 ) -> np.ndarray:
+    """
+    Calculates the shape of the input as a NumPy array.
+
+    Parameters
+    ----------
+    a : Union[np.ndarray, list, float, int, bool, str,], optional
+        The input whose shape is to be calculated. If None, the default function is
+        used to initialize an empty array.
+        Can be of types: np.ndarray, list, float, int, bool, or str.
+
+    Returns
+    -------
+    np.ndarray
+        The shape of the input as a NumPy array.
+
+    Examples
+    --------
+    >>> calc_shape([])
+    array([0])
+
+    >>> calc_shape(5)
+    array([])
+
+    >>> calc_shape([1, 2, 3])
+    array([3])
+    """
 
     if a is None:
         a = default(a=a)
@@ -84,6 +184,37 @@ def calc_axes(
                 shape: Optional[Union[np.ndarray, list, tuple,]] = None,
                 ndim: Optional[int] = None,
                 ) -> np.ndarray:
+    """
+    Calculates the axes of the input based on its shape or number of dimensions.
+
+    Parameters
+    ----------
+    a : Union[np.ndarray, list, float, int, bool, str,], optional
+        The input whose axes are to be calculated. If None, the default function is
+        used to initialize an empty array.
+        Can be of types: np.ndarray, list, float, int, bool, or str.
+    shape : Union[np.ndarray, list, tuple,], optional
+        The shape of the input, used to determine the number of dimensions if provided.
+    ndim : int, optional
+        The number of dimensions. If None, it is determined based on the shape or the
+        input array.
+
+    Returns
+    -------
+    np.ndarray
+        The axes of the input as a NumPy array.
+
+    Examples
+    --------
+    >>> calc_axes([])
+    array([0])
+
+    >>> calc_axes(5)
+    array([])
+
+    >>> calc_axes([1, 2, 3])
+    array([0])
+    """
 
     if ndim is None:
         if shape is None:
@@ -103,6 +234,34 @@ def calc_length(
                 a: Optional[Union[np.ndarray, list, float, int, bool, str,]] = None,
                 shape: Optional[Union[np.ndarray, list, tuple,]] = None,
                 ) -> int:
+    """
+    Calculates the length of the first axis of an input based on its shape.
+
+    Parameters
+    ----------
+    a : Union[np.ndarray, list, float, int, bool, str,], optional
+        The input whose length is to be calculated. If None, the default function is
+        used to initialize an empty array.
+        Can be of types: np.ndarray, list, float, int, bool, or str.
+    shape : Union[np.ndarray, list, tuple,], optional
+        The shape of the input, used to determine the length if provided.
+
+    Returns
+    -------
+    int
+        The length of the input based on its shape.
+
+    Examples
+    --------
+    >>> calc_length([])
+    0
+
+    >>> calc_length(5)
+    0
+
+    >>> calc_length([1, 2, 3])
+    1
+    """
 
     if shape is None:
         shape = calc_shape(a=a)
@@ -119,6 +278,40 @@ def unique(
             appear_order: Optional[bool] = None,
             *args, **kwargs,
             ) -> np.ndarray:
+    """
+    Returns the unique elements of the input array, optionally preserving their order
+    of appearance.
+
+    Parameters
+    ----------
+    a : Union[np.ndarray, list, float, int, bool, str,], optional
+        The input array. If None, the default function is used to initialize an empty
+        array.
+        Can be of types: np.ndarray, list, float, int, bool, or str.
+    appear_order : bool, optional
+        If True, the order of first appearance of the unique elements is preserved.
+        Default is True.
+    *args :
+        Additional arguments to pass to `np.unique`.
+    **kwargs :
+        Additional keyword arguments to pass to `np.unique`.
+
+    Returns
+    -------
+    np.ndarray
+        The unique elements of the input array.
+
+    Examples
+    --------
+    >>> unique([1, 3, 3, 3, 2, 2])
+    array([1, 3, 2])
+
+    >>> unique([1, 3, 3, 3, 2, 2], appear_order=True)
+    array([1, 3, 2])
+
+    >>> unique([1, 3, 3, 3, 2, 2], appear_order=False)
+    array([1, 2, 3])
+    """
 
     if appear_order is None:
         appear_order = True
@@ -143,6 +336,44 @@ def expand_dims(
                 ta: Optional[Union[np.ndarray, list, float, int, bool, str,]] = None,
                 expand_back: Optional[bool] = None,
                 ) -> np.ndarray:
+    """
+    Expands the dimensions of the input array along the specified axis or axes.
+
+    Parameters
+    ----------
+    a : Union[np.ndarray, list, float, int, bool, str,], optional
+        The input array. If None, the default function is used to initialize an empty
+        array.
+        Can be of types: np.ndarray, list, float, int, bool, or str.
+    axis : Union[np.ndarray, list, tuple,], optional
+        The axis or axes along which to expand the dimensions of the input array.
+    caxes : Union[np.ndarray, list, tuple,], optional
+        The current axes of the input array.
+    taxes : Union[np.ndarray, list, tuple,], optional
+        The target axes for the expanded dimensions.
+    tndim : int, optional
+        The target number of dimensions.
+    tshape : Union[np.ndarray, list, tuple,], optional
+        The target shape of the input array.
+    ta : Union[np.ndarray, list, float, int, bool, str,], optional
+        The target array for calculating axes or shape.
+        Can be of types: np.ndarray, list, float, int, bool, or str.
+    expand_back : bool, optional
+        If True, the dimensions are expanded at the end of the axes. Default is False.
+
+    Returns
+    -------
+    np.ndarray
+        The input array with expanded dimensions.
+
+    Examples
+    --------
+    >>> expand_dims([1, 2, 3], axis=0)
+    array([[1, 2, 3]])
+
+    >>> expand_dims(5, axis=1)
+    array([[5]])
+    """
 
     if expand_back is None:
         expand_back = False
@@ -170,6 +401,37 @@ def pad(
         expand_back: Optional[bool] = None,
         *args, **kwargs,
         ) -> list:
+    """
+    Pads the input arrays to match the master shape.
+
+    Parameters
+    ----------
+    a_s : list, optional
+        The list of input arrays. If None, the default function is used to initialize
+        an empty array.
+        Can be of types: list.
+    master_shape : Union[np.ndarray, list, tuple,], optional
+        The shape to which the input arrays will be padded.
+    expand_back : bool, optional
+        If True, the dimensions are expanded at the end of the axes. Default is False.
+    *args :
+        Additional arguments to pass to `np.pad`.
+    **kwargs :
+        Additional keyword arguments to pass to `np.pad`.
+
+    Returns
+    -------
+    list
+        The list of padded arrays.
+
+    Examples
+    --------
+    >>> pad([[1, 2, 3], [4, 5]])
+    [array([1, 2, 3]), array([4, 5, 0])]
+
+    >>> pad([5], master_shape=(3,))
+    [array([5, 0, 0])]
+    """
 
     if a_s is None:
         a_s = default()
@@ -231,6 +493,32 @@ def moveaxis_destination(
                                                         tuple,
                                                         ]] = None,
                             ) -> np.ndarray:
+    """
+    Calculates the destination indices for moving axes based on the source.
+
+    Parameters
+    ----------
+    source : Union[np.ndarray, list, tuple,], optional
+        The source axes. If None, the default function is used to initialize an empty
+        array.
+        Can be of types: np.ndarray, list, or tuple.
+    destination : Union[np.ndarray, list, tuple,], optional
+        The destination axes. If None, it is set to the range of source size subtracted
+        by source size.
+
+    Returns
+    -------
+    np.ndarray
+        The destination indices for moving axes.
+
+    Examples
+    --------
+    >>> moveaxis_destination([0, 1, 2])
+    array([-3, -2, -1])
+
+    >>> moveaxis_destination([0, 1, 2], [2, 0, 1])
+    array([2, 0, 1])
+    """
 
     source = default(a=source)
     if destination is None:
@@ -244,6 +532,35 @@ def moveaxes(
                 source: Optional[Union[np.ndarray, list, tuple,]] = None,
                 destination: Optional[Union[np.ndarray, list, tuple,]] = None,
                 ) -> np.ndarray:
+    """
+    Moves axes of an array to new positions.
+
+    Parameters
+    ----------
+    a : Union[np.ndarray, list, float, int, str], optional
+        The input array. If None, the default function is used to initialize an empty
+        array.
+        Can be of types: np.ndarray, list, float, int, or str.
+    source : Union[np.ndarray, list, tuple,], optional
+        The original positions of the axes to move.
+    destination : Union[np.ndarray, list, tuple,], optional
+        The new positions of the axes.
+
+    Returns
+    -------
+    np.ndarray
+        The array with moved axes.
+
+    Examples
+    --------
+    >>> moveaxes([[1, 2, 3], [4, 5, 6]], source=[0, 1], destination=[1, 0])
+    array([[1, 4],
+           [2, 5],
+           [3, 6]])
+
+    >>> moveaxes([1, 2, 3], source=[0], destination=[-1])
+    array([1, 2, 3])
+    """
 
     a = default(a=a)
 
@@ -264,6 +581,38 @@ def reshape_iter_pre(
                         axes: Optional[Union[np.ndarray, list, tuple,]] = None,
                         col_iter: Optional[bool] = None,
                         ) -> Tuple[np.ndarray, int, Union[np.ndarray, list, tuple,]]:
+    """
+    Reshapes the input array for iteration based on the specified axes.
+
+    Parameters
+    ----------
+    a : Union[np.ndarray, list, float, int, bool, str], optional
+        The input array. If None, the default function is used to initialize an empty
+        array.
+        Can be of types: np.ndarray, list, float, int, bool, or str.
+    axes : Union[np.ndarray, list, tuple,], optional
+        The axes to move for reshaping.
+    col_iter : bool, optional
+        If True, the iteration is column-wise. Default is True.
+
+    Returns
+    -------
+    Tuple[np.ndarray, int, Union[np.ndarray, list, tuple,]]
+        The reshaped array, the size of the first dimension, and the original shape
+        components.
+
+    Examples
+    --------
+    >>> reshape_iter_pre([1, 2, 3], axes=[0])
+    (array([[1, 2, 3]]), 1, [array([], dtype=int) array([3])])
+
+    >>> reshape_iter_pre([[1, 2], [3, 4]])
+    (array([1, 2, 3, 4]), 4, [array([2, 2]), array([], dtype=int)])
+
+    >>> reshape_iter_pre([[1, 2], [3, 4]], axes=[1])
+    (array([[1, 2],
+            [3, 4]]), 2, [array([2]), array([2])])
+    """
 
     if col_iter is None:
         col_iter = True
@@ -304,6 +653,35 @@ def reshape_iter_post(
                         shape_m_0: Optional[Union[np.ndarray, list, tuple,]] = None,
                         reshape: Optional[bool] = None,
                         ) -> np.ndarray:
+    """
+    Reshapes the input array back to its original form after iteration.
+
+    Parameters
+    ----------
+    a : Union[np.ndarray, list, float, int, bool, str], optional
+        The input array. If None, the default function is used to initialize an empty
+        array.
+        Can be of types: np.ndarray, list, float, int, bool, or str.
+    shape_m_0 : Union[np.ndarray, list, tuple,], optional
+        The first part of the original shape of the array before iteration.
+    reshape : bool, optional
+        If True, reshapes the array back to its original form. Default is True.
+
+    Returns
+    -------
+    np.ndarray
+        The reshaped array.
+
+    Examples
+    --------
+    >>> reshape_iter_post([[1], [2], [3]], shape_m_0=[3], reshape=True)
+    array([[1],
+           [2],
+           [3]])
+
+    >>> reshape_iter_post([1, 2, 3], shape_m_0=[1, 3], reshape=True)
+    array([[1, 2, 3]])
+    """
 
     if reshape is None:
         reshape = True
@@ -328,6 +706,40 @@ def f(
         axes: Optional[Union[np.ndarray, list, tuple,]] = None,
         reshape: Optional[bool] = None,
         ) -> np.ndarray:
+    """
+    Applies a function to the input array over specified axes and reshapes the result.
+
+    Parameters
+    ----------
+    a : Union[np.ndarray, list, float, int, bool, str], optional
+        The input array. If None, the default function is used to initialize an empty
+        array.
+        Can be of types: np.ndarray, list, float, int, bool, or str.
+    f : Callable, optional
+        The function to apply to the input array.
+    args : tuple, optional
+        The positional arguments to pass to the function `f`.
+    kwargs : dict, optional
+        The keyword arguments to pass to the function `f`.
+    axes : Union[np.ndarray, list, tuple,], optional
+        The axes over which to apply the function.
+    reshape : bool, optional
+        If True, reshapes the result back to the original form after applying the
+        function. Default is True.
+
+    Returns
+    -------
+    np.ndarray
+        The array with the function applied and reshaped.
+
+    Examples
+    --------
+    >>> f([1, 2, 3], f=np.mean, axes=[0])
+    array([2.])
+
+    >>> f([[1, 2], [3, 4]], f=np.sum, axes=[1])
+    array([3, 7])
+    """
 
     if f is not None:
         a = default(a=a)
@@ -353,6 +765,46 @@ def f2_axes(
             args: Optional[tuple] = None,
             kwargs: Optional[dict] = None,
             ) -> np.ndarray:
+    """
+    Applies a binary function to two arrays, aligning the axes as specified.
+
+    Parameters
+    ----------
+    a_maj : Union[np.ndarray, list, float, int, bool, str,], optional
+        The major array to which the function is applied. If None, the default function
+        is used to initialize an empty array.
+        Can be of types: np.ndarray, list, float, int, bool, or str.
+    a_min : Union[np.ndarray, list, float, int, bool, str,], optional
+        The minor array to which the function is applied. If None, the default function
+        is used to initialize an empty array.
+        Can be of types: np.ndarray, list, float, int, bool, or str.
+    f2 : Callable, optional
+        The binary function to apply to the arrays. Default is `np.multiply`.
+    caxes : Union[np.ndarray, list, tuple,], optional
+        The axes along which to align the minor array with the major array.
+    corigin : int, optional
+        The starting index for the alignment of axes.
+    cend : bool, optional
+        If True, the alignment starts from the end of the axes.
+    args : tuple, optional
+        The positional arguments to pass to the function `f2`.
+    kwargs : dict, optional
+        The keyword arguments to pass to the function `f2`.
+
+    Returns
+    -------
+    np.ndarray
+        The result of applying the binary function to the aligned arrays.
+
+    Examples
+    --------
+    >>> f2_axes([1, 2, 3], [4, 5, 6])
+    array([4, 10, 18])
+
+    >>> f2_axes([[1, 2], [3, 4]], [5, 6], caxes=[1])
+    array([[5, 12],
+           [15, 24]])
+    """
 
     if f2 is None:
         f2 = np.multiply
@@ -388,6 +840,52 @@ def iterarr(
             dtype: Optional[np.dtype] = None,
             as_list: Optional[bool] = None,
         ) -> Union[np.ndarray, list]:
+    """
+    Resizes the input array to a 1D array and optionally converts it to a list.
+
+    Parameters
+    ----------
+    a : Union[np.ndarray, list, float, int, bool, str,]
+        The input array.
+        Can be of types: np.ndarray, list, float, int, bool, or str.
+    shape : Union[np.ndarray, list, tuple,], optional
+        The desired shape for the output array.
+    dtype : np.dtype, optional
+        The desired data type for the output array.
+    as_list : bool, optional
+        If True, converts the output array to a list. Default is False.
+
+    Returns
+    -------
+    Union[np.ndarray, list]
+        The resized array, or list if `as_list` is True.
+
+    Raises
+    ------
+    ValueError
+        If the size of `a` does not match the specified output shape.
+
+    Examples
+    --------
+    >>> iterarr(1)
+    array([1])
+
+    >>> iterarr("test")
+    array(["test"])
+
+    >>> iterarr([1, 2, 3])
+    array([1, 2, 3])
+
+    >>> iterarr([[1, 2, 3],
+                [4, 5, 6]])
+    array([1, 2, 3, 4, 5, 6])
+
+    >>> iterarr([1, 2, 3], dtype=np.float32)
+    array([1., 2., 3.], dtype=float32)
+
+    >>> iterarr([1, 2, 3], as_list=True)
+    [1, 2, 3]
+    """
 
     if as_list is None:
         as_list = False
@@ -414,6 +912,34 @@ def append(
             a: Optional[Union[np.ndarray, list, float, int, bool, str,]] = None,
             app: Optional[Union[np.ndarray, list, float, int, bool, str,]] = None,
             ) -> np.ndarray:
+    """
+    Appends two arrays or lists and returns the concatenated array.
+
+    Parameters
+    ----------
+    a : Union[np.ndarray, list, float, int, bool, str,], optional
+        The first input array or list. If None, an empty list is used.
+        Can be of types: np.ndarray, list, float, int, bool, or str.
+    app : Union[np.ndarray, list, float, int, bool, str,], optional
+        The second input array or list to append. If None, an empty list is used.
+        Can be of types: np.ndarray, list, float, int, bool, or str.
+
+    Returns
+    -------
+    np.ndarray
+        The concatenated array.
+
+    Examples
+    --------
+    >>> append([1, 2, 3], [4, 5, 6])
+    array([1, 2, 3, 4, 5, 6])
+
+    >>> append(1, 2)
+    array([1, 2])
+
+    >>> append([], [1, 2, 3])
+    array([1, 2, 3])
+    """
 
     if a is None:
         a = []
@@ -431,6 +957,37 @@ def filter(
             a_in: Optional[Union[np.ndarray, list, float, int, bool, str,]] = None,
             a_rm: Optional[Union[np.ndarray, list, float, int, bool, str,]] = None,
             ) -> np.ndarray:
+    """
+    Filters elements in an array based on optional inclusion and exclusion criteria.
+
+    Parameters
+    ----------
+    a : Union[np.ndarray, list, float, int, bool, str,]
+        The input array.
+        Can be of types: np.ndarray, list, float, int, bool, or str.
+    a_in : Union[np.ndarray, list, float, int, bool, str,], optional
+        The elements to include.
+        Can be of types: np.ndarray, list, float, int, bool, or str.
+    a_rm : Union[np.ndarray, list, float, int, bool, str,], optional
+        The elements to remove.
+        Can be of types: np.ndarray, list, float, int, bool, or str.
+
+    Returns
+    -------
+    np.ndarray
+        The filtered array.
+
+    Examples
+    --------
+    >>> filter([1, 2, 3, 4, 5], a_in=[1, 2, 3], a_rm=[2])
+    array([1, 3])
+
+    >>> filter([1, 2, 3, 4, 5], a_in=[2, 4])
+    array([2, 4])
+
+    >>> filter([1, 2, 3, 4, 5], a_rm=[2, 4])
+    array([1, 3, 5])
+    """
 
     a = iterarr(a)
 
@@ -454,6 +1011,31 @@ def index_N(
             N: Optional[int] = None,
             reshape: Optional[bool] = None,
             ) -> np.ndarray:
+    """
+    Calculates the index array for a given shape and optionally reshapes it.
+
+    Parameters
+    ----------
+    shape : Union[np.ndarray, list, tuple,]
+        The shape of the array for which to calculate the index array.
+    N : int, optional
+        The number of elements to index. Default is 0.
+    reshape : bool, optional
+        If True, reshapes the index array to match the original shape. Default is True.
+
+    Returns
+    -------
+    np.ndarray
+        The index array.
+
+    Examples
+    --------
+    >>> index_N([2, 3], N=4)
+    array([1, 1])
+
+    >>> index_N([2, 3], N=4, reshape=False)
+    array([1, 1])
+    """
 
     shape = np.array(shape, dtype=int)
 
@@ -483,6 +1065,33 @@ def N_index(
             shape: Union[np.ndarray, list, tuple,],
             index: Optional[Union[int, np.ndarray]] = None,
             ) -> int:
+    """
+    Calculates the linear index for a given shape and index array.
+
+    Parameters
+    ----------
+    shape : Union[np.ndarray, list, tuple,]
+        The shape of the array for which to calculate the linear index.
+    index : Union[int, np.ndarray], optional
+        The index array or integer. If None, an array of zeros is used.
+        Can be of types: int or np.ndarray.
+
+    Returns
+    -------
+    int
+        The linear index.
+
+    Examples
+    --------
+    >>> N_index([2, 3], index=[0, 1])
+    1
+
+    >>> N_index([2, 3], index=[1, 2])
+    5
+
+    >>> N_index([2, 3])
+    0
+    """
 
     shape = np.array(shape, dtype=int)
 
@@ -501,6 +1110,41 @@ def index_I_max(
                 flip: Optional[bool] = None,
                 circle: Optional[bool] = None,
                 ) -> Union[int, np.ndarray]:
+    """
+    Adjusts the index `i` based on maximum index `I_max`, with optional flipping and
+    circular behavior.
+
+    Parameters
+    ----------
+    i : Union[int, np.ndarray], optional
+        The index or indices to be adjusted. If None, an array of zeros is used.
+        Can be of types: int or np.ndarray.
+    I_max : int, optional
+        The maximum index for circular behavior.
+    flip : bool, optional
+        If True, flips the indices. Default is False.
+    circle : bool, optional
+        If True, applies circular behavior based on `I_max`. Default is True.
+
+    Returns
+    -------
+    Union[int, np.ndarray]
+        The adjusted index or indices.
+
+    Examples
+    --------
+    >>> index_I_max(5, I_max=10)
+    5
+
+    >>> index_I_max(11, I_max=10)
+    1
+
+    >>> index_I_max(5, I_max=10, flip=True)
+    4
+
+    >>> index_I_max([1, 2, 3], I_max=5, circle=False)
+    array([1, 2, 3])
+    """
 
     if flip is None:
         flip = False
@@ -524,6 +1168,38 @@ def calc_val_1_0_N(
                     val_0: Optional[object] = None,
                     N: Optional[int] = None,
                     ) -> Union[np.ndarray, object,]:
+    """
+    Calculates values based on a boolean flag for a given number of elements.
+
+    Parameters
+    ----------
+    app_val_1 : bool, optional
+        The boolean flag to determine the output values. Default is inferred from
+        `app_val_1_default`.
+    app_val_1_default : bool, optional
+        The default value for `app_val_1`. Default is True.
+    val_1 : object, optional
+        The value to assign when `app_val_1` is True.
+        Can be of types: float, int, bool, str, or any object.
+    val_0 : object, optional
+        The value to assign when `app_val_1` is False.
+        Can be of types: float, int, bool, str, or any object.
+    N : int, optional
+        The number of elements to generate.
+
+    Returns
+    -------
+    Union[np.ndarray, object]
+        The calculated values.
+
+    Examples
+    --------
+    >>> calc_val_1_0_N(app_val_1=[True, False, True], val_1=1, val_0=0, N=3)
+    array([1, 0, 1])
+
+    >>> calc_val_1_0_N(val_1='Y', val_0='N', N=2)
+    array(['Y', 'Y'])
+    """
 
     if app_val_1 is None:
         if app_val_1_default is None:
@@ -543,6 +1219,29 @@ def buffer_add(
                 b: Optional[float] = None,
                 x: Optional[np.ndarray] = None,
                 ) -> np.ndarray:
+    """
+    Adds a buffer value to the input array.
+
+    Parameters
+    ----------
+    b : float, optional
+        The buffer value to add. Default is 0.0.
+    x : np.ndarray, optional
+        The input array. Default is an array [0, 1].
+
+    Returns
+    -------
+    np.ndarray
+        The buffered array.
+
+    Examples
+    --------
+    >>> buffer_add(b=0.5, x=np.array([1, 2]))
+    array([0.5, 2.5])
+
+    >>> buffer_add()
+    array([0. ,  1.])
+    """
 
     if x is None:
         x = np.array([0, 1])
@@ -558,6 +1257,29 @@ def buffer(
             b: Optional[float] = None,
             x: Optional[np.ndarray] = None,
             ) -> np.ndarray:
+    """
+    Applies a buffer value to the input array symmetrically around its midpoint.
+
+    Parameters
+    ----------
+    b : float, optional
+        The buffer multiplier. Default is 1.0.
+    x : np.ndarray, optional
+        The input array. Default is an array [0, 1].
+
+    Returns
+    -------
+    np.ndarray
+        The buffered array.
+
+    Examples
+    --------
+    >>> buffer(b=1.2, x=np.array([1, 2]))
+    array([0.9, 2.1])
+
+    >>> buffer()
+    array([0.,  1.])
+    """
 
     if x is None:
         x = np.array([0, 1])

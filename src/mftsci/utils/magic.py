@@ -20,21 +20,89 @@ from mftsci.utils.arr import filter
 # =====================================
 
 class MagicProp():
+    """
+    Class to represent a magic property handler.
+
+    Methods
+    -------
+    __init__():
+        Initializes the magic property handler.
+    __mprop__() -> Union[str, None]:
+        Returns the magic property name.
+    __mpropkw__() -> Union[str, None]:
+        Returns the magic property keyword.
+    __setmpropnames__(mprop: str = None, mpropkw: str = None):
+        Sets the magic property names.
+    __setmpropmethods__(
+                        ret_class_val: bool = None,
+                        ret_class_val_bool: bool = None,
+                        noval: Union[np.ndarray, list, str] = None,
+                        noval_in: Union[np.ndarray, list, str] = None,
+                        noval_rm: Union[np.ndarray, list, str] = None,
+                        val: Union[np.ndarray, list, str] = None,
+                        val_in: Union[np.ndarray, list, str] = None,
+                        val_rm: Union[np.ndarray, list, str] = None,
+                        val_bool: Union[np.ndarray, list, str] = None,
+                        val_bool_in: Union[np.ndarray, list, str] = None,
+                        val_bool_rm: Union[np.ndarray, list, str] = None,
+                        ):
+        Sets the magic property methods.
+    __setmprop__(
+                    mprop: str = None,
+                    mpropkw: str = None,
+                    ret_class_val: bool = None,
+                    ret_class_val_bool: bool = None,
+                    noval: Union[np.ndarray, list, str] = None,
+                    noval_in: Union[np.ndarray, list, str] = None,
+                    noval_rm: Union[np.ndarray, list, str] = None,
+                    val: Union[np.ndarray, list, str] = None,
+                    val_in: Union[np.ndarray, list, str] = None,
+                    val_rm: Union[np.ndarray, list, str] = None,
+                    val_bool: Union[np.ndarray, list, str] = None,
+                    val_bool_in: Union[np.ndarray, list, str] = None,
+                    val_bool_rm: Union[np.ndarray, list, str] = None,
+                    ):
+        Sets the magic property.
+    __getmprop__(val=None):
+        Gets the magic property value.
+    __copymprop__(val=None):
+        Copies the magic property value.
+    """
 
     def __init__(
                     self,
                     ):
+        """
+        Initializes the magic property handler.
+        """
+
         pass
 
     def __mprop__(
                     self,
                     ) -> Union[str, None]:
+        """
+        Returns the magic property name.
+
+        Returns
+        -------
+        Union[str, None]
+            The magic property name, or None if not set.
+        """
 
         return None
 
     def __mpropkw__(
                     self,
                     ) -> Union[str, None]:
+        """
+        Returns the magic property keyword.
+
+        Returns
+        -------
+        Union[str, None]
+            The magic property keyword, or None if not set.
+        """
 
         return None
 
@@ -43,6 +111,16 @@ class MagicProp():
                             mprop: Optional[str] = None,
                             mpropkw: Optional[str] = None,
                             ):
+        """
+        Sets the magic property names.
+
+        Parameters
+        ----------
+        mprop : str, optional
+            The magic property name, by default None.
+        mpropkw : str, optional
+            The magic property keyword, by default None.
+        """
 
         _setmpropnames(
                         _class=self,
@@ -64,6 +142,34 @@ class MagicProp():
                             val_bool_in: Optional[Union[np.ndarray, list, str,]] = None,
                             val_bool_rm: Optional[Union[np.ndarray, list, str,]] = None,
                             ):
+        """
+        Sets the magic property methods.
+
+        Parameters
+        ----------
+        ret_class_val : bool, optional
+            Return class value, by default None.
+        ret_class_val_bool : bool, optional
+            Return class value as boolean, by default None.
+        noval : Union[np.ndarray, list, str], optional
+            No value methods, by default `get_magic_method_names()['noval']`.
+        noval_in : Union[np.ndarray, list, str], optional
+            No value inclusion methods, by default None.
+        noval_rm : Union[np.ndarray, list, str], optional
+            No value removal methods, by default None.
+        val : Union[np.ndarray, list, str], optional
+            Value methods, by default `get_magic_method_names()['val']`.
+        val_in : Union[np.ndarray, list, str], optional
+            Value inclusion methods, by default None.
+        val_rm : Union[np.ndarray, list, str], optional
+            Value removal methods, by default None.
+        val_bool : Union[np.ndarray, list, str], optional
+            Value boolean methods, by default `get_magic_method_names()['val_bool']`.
+        val_bool_in : Union[np.ndarray, list, str], optional
+            Value boolean inclusion methods, by default None.
+        val_bool_rm : Union[np.ndarray, list, str], optional
+            Value boolean removal methods, by default None.
+        """
 
         _setmpropmethods(
                             _class=self,
@@ -96,6 +202,38 @@ class MagicProp():
                         val_bool_in: Optional[Union[np.ndarray, list, str,]] = None,
                         val_bool_rm: Optional[Union[np.ndarray, list, str,]] = None,
                         ):
+        """
+        Sets the magic property.
+
+        Parameters
+        ----------
+        mprop : str, optional
+            The magic property name, by default None.
+        mpropkw : str, optional
+            The magic property keyword, by default None.
+        ret_class_val : bool, optional
+            Return class value, by default None.
+        ret_class_val_bool : bool, optional
+            Return class value as boolean, by default None.
+        noval : Union[np.ndarray, list, str], optional
+            No value methods, by default `get_magic_method_names()['noval']`.
+        noval_in : Union[np.ndarray, list, str], optional
+            No value inclusion methods, by default None.
+        noval_rm : Union[np.ndarray, list, str], optional
+            No value removal methods, by default None.
+        val : Union[np.ndarray, list, str], optional
+            Value methods, by default `get_magic_method_names()['val']`.
+        val_in : Union[np.ndarray, list, str], optional
+            Value inclusion methods, by default None.
+        val_rm : Union[np.ndarray, list, str], optional
+            Value removal methods, by default None.
+        val_bool : Union[np.ndarray, list, str], optional
+            Value boolean methods, by default `get_magic_method_names()['val_bool']`.
+        val_bool_in : Union[np.ndarray, list, str], optional
+            Value boolean inclusion methods, by default None.
+        val_bool_rm : Union[np.ndarray, list, str], optional
+            Value boolean removal methods, by default None.
+        """
 
         self.__setmpropnames__(
                                 mprop=mprop,
@@ -119,6 +257,19 @@ class MagicProp():
                         self,
                         val=None,
                         ) -> object:
+        """
+        Gets the magic property value.
+
+        Parameters
+        ----------
+        val : optional
+            The value to get, by default None.
+
+        Returns
+        -------
+        object
+            The magic property value.
+        """
 
         if val is None:
             val = self
@@ -134,6 +285,19 @@ class MagicProp():
                         self,
                         val=None,
                         ) -> object:
+        """
+        Returns an instance of the class copied from the magic property value.
+
+        Parameters
+        ----------
+        val : optional
+            The value to copy, by default None.
+
+        Returns
+        -------
+        object
+            An instance of the class copied from the magic property value.
+        """
 
         if val is None:
             val = self
@@ -154,7 +318,19 @@ class MagicProp():
 def _mprop_novalue(
                     method_name: str,
                     ) -> Callable:
+    """
+    Creates a magic method that does not take `value` as an argument.
 
+    Parameters
+    ----------
+    method_name : str
+        The name of the method.
+
+    Returns
+    -------
+    Callable
+        The magic method.
+    """
     def magic_method(
                         self,
                         *args, **kwargs,
@@ -167,7 +343,21 @@ def _mprop_value(
                     method_name,
                     ret_class: Optional[bool] = None
                     ) -> Callable:
+    """
+    Creates a magic method that does take `value` as an argument.
 
+    Parameters
+    ----------
+    method_name : str
+        The name of the method.
+    ret_class : bool, optional
+        Whether to return the class instance, by default None.
+
+    Returns
+    -------
+    Callable
+        The magic method.
+    """
     if ret_class is None:
         ret_class = False
 
@@ -205,6 +395,40 @@ def _setmprop(
                 val_bool_in: Optional[Union[np.ndarray, list, str,]] = None,
                 val_bool_rm: Optional[Union[np.ndarray, list, str,]] = None,
                 ):
+    """
+    Sets the magic property for a class.
+
+    Parameters
+    ----------
+    _class : class
+        The class to set the magic property for.
+    mprop : str, optional
+        The magic property name, by default None.
+    mpropkw : str, optional
+        The magic property keyword, by default None.
+    ret_class_val : bool, optional
+        Return class value, by default None.
+    ret_class_val_bool : bool, optional
+        Return class value as boolean, by default None.
+    noval : Union[np.ndarray, list, str], optional
+        No value methods, by default `get_magic_method_names()['noval']`.
+    noval_in : Union[np.ndarray, list, str], optional
+        No value inclusion methods, by default None.
+    noval_rm : Union[np.ndarray, list, str], optional
+        No value removal methods, by default None.
+    val : Union[np.ndarray, list, str], optional
+        Value methods, by default `get_magic_method_names()['val']`.
+    val_in : Union[np.ndarray, list, str], optional
+        Value inclusion methods, by default None.
+    val_rm : Union[np.ndarray, list, str], optional
+        Value removal methods, by default None.
+    val_bool : Union[np.ndarray, list, str], optional
+        Value boolean methods, by default `get_magic_method_names()['val_bool']`.
+    val_bool_in : Union[np.ndarray, list, str], optional
+        Value boolean inclusion methods, by default None.
+    val_bool_rm : Union[np.ndarray, list, str], optional
+        Value boolean removal methods, by default None.
+    """
 
     _setmpropnames(
                     _class=_class,
@@ -232,6 +456,18 @@ def _setmpropnames(
                     mprop: Optional[str] = None,
                     mpropkw: Optional[str] = None,
                     ):
+    """
+    Sets the magic property names for a class.
+
+    Parameters
+    ----------
+    _class : class
+        The class to set the magic property names for.
+    mprop : str, optional
+        The magic property name, by default None.
+    mpropkw : str, optional
+        The magic property keyword, by default None.
+    """
 
     if mpropkw is None:
         mpropkw = mprop
@@ -254,6 +490,36 @@ def _setmpropmethods(
                         val_bool_in: Optional[Union[np.ndarray, list, str,]] = None,
                         val_bool_rm: Optional[Union[np.ndarray, list, str,]] = None,
                         ):
+    """
+    Sets the magic property methods for a class.
+
+    Parameters
+    ----------
+    _class : class
+        The class to set the magic property methods for.
+    ret_class_val : bool, optional
+        Return class value, by default None.
+    ret_class_val_bool : bool, optional
+        Return class value as boolean, by default None.
+    noval : Union[np.ndarray, list, str], optional
+        No value methods, by default `get_magic_method_names()['noval']`.
+    noval_in : Union[np.ndarray, list, str], optional
+        No value inclusion methods, by default None.
+    noval_rm : Union[np.ndarray, list, str], optional
+        No value removal methods, by default None.
+    val : Union[np.ndarray, list, str], optional
+        Value methods, by default `get_magic_method_names()['val']`.
+    val_in : Union[np.ndarray, list, str], optional
+        Value inclusion methods, by default None.
+    val_rm : Union[np.ndarray, list, str], optional
+        Value removal methods, by default None.
+    val_bool : Union[np.ndarray, list, str], optional
+        Value boolean methods, by default `get_magic_method_names()['val_bool']`.
+    val_bool_in : Union[np.ndarray, list, str], optional
+        Value boolean inclusion methods, by default None.
+    val_bool_rm : Union[np.ndarray, list, str], optional
+        Value boolean removal methods, by default None.
+    """
 
     if ret_class_val is None:
         ret_class_val = True
