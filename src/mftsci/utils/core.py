@@ -4,7 +4,7 @@ Core module for `utils` subpackage.
 # =====================================
 # IMPORT
 # =====================================
-# Native packages
+# Built-in modules
 
 
 # External packages

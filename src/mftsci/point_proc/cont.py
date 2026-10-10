@@ -4,7 +4,7 @@ Module for point processes.
 # =====================================
 # IMPORT
 # =====================================
-# Native packages
+# Built-in modules
 from typing import Optional, Union, Callable, Tuple
 
 # External packages
