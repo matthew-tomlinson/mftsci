@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mftsci"
-version = "0.0.0"
+version = "0.0.1.dev20260824"
 description = "A package for scientific analysis and communication."
 readme = "README.rst"
 authors = [
@@ -17,22 +17,33 @@ classifiers = [
 
 ]
 license = {text = "MIT license"}
-requires-python = ">3.11"
+requires-python = ">=3.9"
 dependencies = [
-  "numpy",
+  "numpy>=2.0",
   "scipy",
   "pandas",
-  "matplotlib",
-  "statsmodels",
+  "matplotlib>=3.8",
+  "scikit-learn",
   "numdifftools",
+  "jinja2",
 ]
 
 [project.optional-dependencies]
+statsmodels = [
+    "statsmodels",
+]
+linalg_design = [
+    "oapackage",
+]
+signal = [
+    "emd",
+    "EMD-signal",
+]
 dev = [
     "coverage",  # testing
     "mypy",  # linting
     "pytest",  # testing
-    "ruff"  # linting
+    "ruff",  # linting
 ]
 
 [project.urls]

@@ -4,7 +4,7 @@ Core module for `htest` subpackage.
 # =====================================
 # IMPORT
 # =====================================
-# Native packages
+# Built-in modules
 
 
 # External packages

@@ -7,8 +7,8 @@ Core module for `htests` subpackage.
 # =====================================
 # IMPORT
 # =====================================
-# Native packages
-from typing import Optional, Union
+# Built-in modules
+from typing import Optional, Union, Callable
 
 # External packages
 import numpy as np
@@ -108,24 +108,46 @@ class TestRes(TestMeta):
 
         return [0]
 
+    def calc_metafunc_index(
+                                self,
+                                *args, **kwargs,
+                                ) -> Callable:
+
+        return utils.meta.return_x
+
+    def calc_metafunc_value(
+                                self,
+                                *args, **kwargs,
+                                ) -> Callable:
+
+        return utils.meta.return_x
+
     def calc_res_dict(
                         self,
                         keys: Optional[Union[np.ndarray, list, str,]] = None,
                         keys_in: Optional[Union[np.ndarray, list, str,]] = None,
                         keys_rm: Optional[Union[np.ndarray, list, str,]] = None,
+                        fvalue: Optional[Callable] = None,
                         ) -> dict:
+
+        fvalue = utils.meta.metafunc_decorator(
+                    metafunc=self.calc_metafunc_value(),
+                    )(fvalue)
 
         keys = self.calc_res_keys(keys=keys, keys_in=keys_in, keys_rm=keys_rm)
 
-        return {k: self.__getattribute__(k) for k in keys}
+        return {k: fvalue(getattr(self, k)) for k in keys}
 
     def calc_res_df(
                     self,
                     keys: Optional[Union[np.ndarray, list, str,]] = None,
                     keys_in: Optional[Union[np.ndarray, list, str,]] = None,
                     keys_rm: Optional[Union[np.ndarray, list, str,]] = None,
+                    fvalue: Optional[Callable] = None,
+                    findex: Optional[Callable] = None,
                     ind_slice: Optional[Union[
                                                 pd.core.indexes.base.Index,
+                                                pd.core.indexes.multi.MultiIndex,
                                                 np.ndarray,
                                                 list,
                                                 object,
@@ -136,10 +158,18 @@ class TestRes(TestMeta):
         if flatten is None:
             flatten = False
 
-        index = self.calc_res_index()
-        df = pd.DataFrame(self.calc_res_dict(keys=keys,
-                                             keys_in=keys_in,
-                                             keys_rm=keys_rm), index=index)
+        findex = utils.meta.metafunc_decorator(
+                        metafunc=self.calc_metafunc_index(),
+                        )(findex)
+
+        index = findex(self.calc_res_index())
+
+        df = pd.DataFrame(self.calc_res_dict(
+                                            keys=keys,
+                                            keys_in=keys_in,
+                                            keys_rm=keys_rm,
+                                            fvalue=fvalue,
+                                            ), index=index)
         if ind_slice is not None:
             df = df[ind_slice]
 
@@ -148,17 +178,3 @@ class TestRes(TestMeta):
             df.columns = df.columns.map(lambda x: f"{x[0]}_{x[1]}")
 
         return df
-
-
-# =====================================
-# FUNCTIONS
-# =====================================
-
-
-def default_N(
-                N=None,
-                ) -> int:
-
-    if N is None:
-        N = 100
-    return N

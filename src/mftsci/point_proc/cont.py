@@ -4,7 +4,7 @@ Module for point processes.
 # =====================================
 # IMPORT
 # =====================================
-# Native packages
+# Built-in modules
 from typing import Optional, Union, Callable, Tuple
 
 # External packages
@@ -24,6 +24,9 @@ from mftsci import utils
 
 
 class PointProcess():
+    """
+    Point process in local time bounds.
+    """
 
     def __init__(
                     self,
@@ -46,6 +49,9 @@ class PointProcess():
                     self,
                     name: str,
                     ):
+        """
+        Set name of point process.
+        """
 
         self.name = name
 
@@ -59,6 +65,9 @@ class PointProcess():
                         t_0: Optional[Union[float, int,]] = None,
                         t_1: Optional[Union[float, int,]] = None,
                         ):
+        """
+        Set local bounds in time.
+        """
 
         self.t_bounds = utils.bounds.Bounds(bounds=t_bounds, a=t_0, b=t_1)
 
@@ -67,6 +76,9 @@ class PointProcess():
                         lambda_fn: Callable,
                         Delta_Lambda_fn: Optional[Callable] = None,
                         ):
+        """
+        Set intensity function.
+        """
 
         if lambda_fn is None:
             lambda_fn = gen_lambda_const()
@@ -79,6 +91,9 @@ class PointProcess():
                             self,
                             Delta_Lambda_fn: Optional[Callable] = None,
                             ):
+        """
+        Set integrated intensity function
+        """
 
         if Delta_Lambda_fn is None:
             def Delta_Lambda_fn(t_0, t_1):
@@ -90,6 +105,12 @@ class PointProcess():
                     self,
                     t: Optional[Union[float, int,]] = None,
                     ) -> Union[np.ndarray, float]:
+        f"""
+        Intensity function.
+        $$
+        \\lambda{{(t)}}
+        $$
+        """     # noqa: F541
 
         if t is None:
             t = 0.0
@@ -101,6 +122,17 @@ class PointProcess():
                         t_0: Optional[Union[float, int,]] = None,
                         t_1: Optional[Union[float, int,]] = None,
                         ) -> Union[np.ndarray, float]:
+        f"""
+        Integrated intensity function evaluated between t_0 and t_1.
+        $$
+        \\Delta{{\\lambda}}{{(t_0, t_1)}}
+        =
+        \\int_{{t_0}}^{{t_1}}{{
+        \\lambda{{(t')}}
+        d{{t'}}
+        }}
+        $$
+        """     # noqa: F541
 
         if t_0 is None:
             t_0 = 0.0
@@ -114,12 +146,38 @@ class PointProcess():
                     self,
                     t: Optional[Union[float, int,]] = None,
                     ) -> Union[np.ndarray, float]:
+        f"""
+        Integrated intensity function evaluated between 0 and t.
+        $$
+        \\Lambda{{(t)}}
+        =
+        \\int_{{0}}^{{t}}{{
+        \\lambda{{(t')}}
+        d{{t'}}
+        }}
+        $$
+        """     # noqa: F541
 
         return self.Delta_Lambda_fn(t_0=0.0, t_1=t)
 
     def calc_tilde_a_lambda(
                             self,
                             ) -> float:
+        f"""
+        Calculate expected arrival intensity between local bounds t_0 and t_1.
+        $$
+        \\tilde{{a}}_{{\\lambda}}
+        =
+        \\frac{{
+        \\int_{{t_0}}^{{t_1}}{{
+        \\lambda{{(t')}}
+        d{{t'}}
+        }}
+        }}{{
+        t_1 - t_0
+        }}
+        $$
+        """     # noqa: F541
 
         return self.Delta_Lambda_fn(t_0=self.t_bounds.bounds[0],
                                     t_1=self.t_bounds.bounds[1])/self.t_bounds.Delta()
@@ -127,6 +185,9 @@ class PointProcess():
     def set_tilde_a_lambda(
                             self,
                             ):
+        """
+        Set expected arrival intensity
+        """
 
         self.tilde_a_lambda = self.calc_tilde_a_lambda()
 
@@ -136,6 +197,9 @@ class PointProcess():
                             scipy.stats._distn_infrastructure.rv_continuous_frozen
                             ] = None,
                         ):
+        """
+        Set mark distribution $\\mathcal{{D}}$.
+        """
 
         if mark_dist is None:
             mark_dist = scipy.stats.expon()
@@ -143,6 +207,9 @@ class PointProcess():
         self.mark_dist = mark_dist
 
     def sim_marks(self):
+        """
+        Simulate marks by sampling from mark distribution.
+        """
 
         self.events["M"] = self.mark_dist.rvs(self.events["t"].size)
 
@@ -150,6 +217,10 @@ class PointProcess():
                     self,
                     lambda_max_min: Optional[Union[float, int,]] = None,
                     ):
+        """
+        Simulate (via Monte Carlo) arrival times in local time bounds by subsampling
+        uniform random points in a 2D area.
+        """
 
         # Calculate expected arrival intensity
         self.set_tilde_a_lambda()
@@ -177,6 +248,9 @@ class PointProcess():
                     num: Optional[int] = None,
                     delta: Optional[Union[float, int,]] = None,
                     ) -> Union[np.ndarray, float]:
+        """
+        Calculate event count time series.
+        """
 
         if t is None:
             if delta is None:
@@ -197,6 +271,9 @@ class PointProcess():
                     plot_scatter_args: Optional[tuple] = None,
                     plot_scatter_kwargs: Optional[dict] = None,
                     ):
+        """
+        Plot arrival times.
+        """
 
         ax = plot_t_k(ax=ax, t_k=self.events["t"], lot_scatter_args=plot_scatter_args,
                       plot_scatter_kwargs=plot_scatter_kwargs)
@@ -209,6 +286,10 @@ class PointProcess():
                         mm_N: Optional[int] = None,
                         mm_mode: Optional[str] = None,
                         ) -> np.ndarray:
+        """
+        Estimate (via Monte Carlo) maximum and minimum of intensity function in local
+        time bounds.
+        """
 
         return MC_est_minmax(f=self.set_lambda_fn, bounds=self.t_bounds.bounds,
                              mm_N=mm_N, mm_mode=mm_mode)
@@ -224,6 +305,9 @@ class PointProcess():
                     plot_reject_args: Optional[tuple] = None,
                     plot_reject_kwargs: Optional[dict] = None,
                     ):
+        """
+        Plot MC simulation of point process.
+        """
 
         if ax is None:
             fig, ax = plt.subplots()
@@ -283,6 +367,10 @@ class PointProcess():
                                     plot_f_args: Optional[tuple] = None,
                                     plot_f_kwargs: Optional[dict] = None,
                                     ):
+        """
+        Plot histogram of interarrival times Delta_t_k with null: Poisson (time--
+        homogeneous) point process.
+        """
 
         if ax is None:
             fig, ax = plt.subplots()
@@ -371,6 +459,9 @@ def MC_est_minmax(
                     mm_N: Optional[int] = None,
                     mm_mode: Optional[str] = None,
                     ) -> np.ndarray:
+    """
+    Estimate (via Monte Carlo) minimum and maximum of function within local bounds.
+    """
 
     if f is None:
         f = gen_lambda_const(a_lambda=a_lambda)
@@ -531,6 +622,9 @@ def plot_t_k(
                 plot_scatter_args: Optional[tuple] = None,
                 plot_scatter_kwargs: Optional[dict] = None,
                 ) -> matplotlib.axes._axes.Axes:
+    """
+    Plot arrival times.
+    """
 
     if ax is None:
         fig, ax = plt.subplots()
